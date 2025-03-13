@@ -1,4 +1,4 @@
-#  ;LKS - Cyber Security Backend (CTF System) [  UNFINISHED ]
+# [ ; ] LKS - Cyber Security Backend (CTF System) [  UNFINISHED ]
 # KEEP IT THIS IF WANT CONTRIBUTION 
 
 ```
