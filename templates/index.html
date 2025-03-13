@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ .Title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/styles.css">
+    <!-- <script>
+        // function checkAdmin() {
+        //     const isAdmin = localStorage.getItem("admin") === "true";
+        //     if (!isAdmin) {
+        //         alert("Hayo ngapian??!");
+        //         window.location.href = "/login";
+        //     }
+        // }
+        // checkAdmin();  
+    </script> -->
+
+</head>
+
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#"> ; LKS - CYBER SECURITY</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">🏠 Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./leaderboard.html">📊 Leaderboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">🔒 Secure Zone</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light ms-2" id="loginBtn" data-bs-toggle="modal"
+                            data-bs-target="#loginModal">🔑 Login</button>
+                        <button class="btn btn-danger ms-2 d-none" id="logoutBtn">🚪 Logout</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h1 class="text-center">{{ .Title }}</h1>
+        <p class="text-center">{{ .Message }}</p>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">📊 System Statistics</h5>
+                <ul>
+                    <li><strong>CPU Usage:</strong> {{ .SystemInfo.CPUUsage }}%</li>
+                    <li><strong>Memory Usage:</strong> {{ .SystemInfo.MemoryUsage }} MB</li>
+                    <li><strong>Goroutines:</strong> {{ .SystemInfo.GoRoutines }}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">🌐 Network Monitoring</h5>
+                <p><strong>Active Connections:</strong> {{ .Network.ActiveConnections }}</p>
+                <p><strong>Open Ports / Ports Terbuka:</strong></p>
+                <ul>
+                    {{ range .Network.OpenPorts }}
+                    <li>Port: {{ . }}</li>
+                    {{ end }}
+                </ul>
+            </div>
+        </div>
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">🏆 Leaderboard</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Rank</th>
+                                <th>Team</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ range .Leaderboard }}
+                            <tr>
+                                <td>{{ .Rank }}</td>
+                                <td>{{ .TeamName }}</td>
+                                <td>{{ .Score }}</td>
+                            </tr>
+                            {{ end }}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="text-center mt-4 p-3 bg-dark text-light">
+        <p>© Titikoma | Simulation.</p>
+    </footer>
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg rounded-4">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold text-primary" id="loginModalLabel">🔑 Halo. Welcome Back 😊 </h5>
+                    <p class="text-muted">Login to your account to continue</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginUsername" class="form-label fw-semibold">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+                                <input type="text" class="form-control rounded-end" id="loginUsername"
+                                    placeholder="Enter your username" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label fw-semibold">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control rounded-end" id="loginPassword"
+                                    placeholder="Enter your password" required>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                            </div>
+                            <a href="#" class="text-decoration-none text-primary small">Forgot password?</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 mt-3 rounded-pill">Login</button>
+                    </form>
+                </div>
+                <div class="modal-footer border-0 d-flex justify-content-center">
+                    <p class="mb-0">Don't have an account?
+                        <a href="#" class="text-decoration-none text-primary" data-bs-toggle="modal"
+                            data-bs-target="#signupModal" data-bs-dismiss="modal">Sign up</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg rounded-4">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold text-success" id="signupModalLabel">📝 Halo. Lets Create Your Account 😊</h5>
+                    <p class="text-muted mb-0">Create an account to get started</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="signupForm">
+                        <div class="mb-3">
+                            <label for="signupUsername" class="form-label fw-semibold">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+                                <input type="text" class="form-control rounded-end" id="signupUsername"
+                                    placeholder="Choose a username" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signupEmail" class="form-label fw-semibold">Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control rounded-end" id="signupEmail"
+                                    placeholder="Enter your email" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signupPassword" class="form-label fw-semibold">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control rounded-end" id="signupPassword"
+                                    placeholder="Create a password" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label fw-semibold">Confirm Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-shield-lock"></i></span>
+                                <input type="password" class="form-control rounded-end" id="confirmPassword"
+                                    placeholder="Confirm your password" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 mt-3 rounded-pill">Sign Up</button>
+                    </form>
+                </div>
+                <div class="modal-footer border-0 d-flex justify-content-center">
+                    <p class="mb-0">Already have an account?
+                        <a href="#" class="text-decoration-none text-success" data-bs-toggle="modal"
+                            data-bs-target="#loginModal" data-bs-dismiss="modal">Login</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- Bootstrap JS & Custom Script -->
+    <!-- MALAS NGASIH VALIDASI -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Cek status login saat halaman dimuat
+        // updateNavbar();
+
+        // Fungsi updateNavbar() saat login/logout
+        // updateNavbar();
+
+        // // Event listener saat tombol login ditekan
+        // document.getElementById("loginBtn").addEventListener("click", function () {
+        //     // Munculkan modal login
+        //     let loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+        //     loginModal.show();
+        // });
+
+        // // Event listener saat form login dikirim
+        // document.getElementById("loginForm").addEventListener("submit", function (event) {
+        //     event.preventDefault();
+
+        //     // Ambil input username dan password
+        //     const username = document.getElementById("username").value;
+        //     const password = document.getElementById("password").value;
+
+        //     // Validasi username dan password
+        //     if (username === "admin" && password === "admin") {
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginForm = document.getElementById("loginForm");
+            const loginBtn = document.getElementById("loginBtn");
+            const logoutBtn = document.getElementById("logoutBtn");
+
+            loginForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                const username = document.getElementById("username").value;
+
+                if (username) {
+                    sessionStorage.setItem("username", username);
+                    updateNavbar();
+                    let loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                    loginModal.hide();
+                }
+            });
+
+            logoutBtn.addEventListener("click", function () {
+                sessionStorage.removeItem("username");
+                updateNavbar();
+            });
+
+            function updateNavbar() {
+                const username = sessionStorage.getItem("username");
+                if (username) {
+                    loginBtn.classList.add("d-none");
+                    logoutBtn.classList.remove("d-none");
+                    logoutBtn.innerText = `🚪 Logout (${username})`;
+                } else {
+                    loginBtn.classList.remove("d-none");
+                    logoutBtn.classList.add("d-none");
+                }
+            }
+
+            // Cek status login saat halaman dimuat
+            updateNavbar();
+        });
+    </script>
+</body>
+
+</html>

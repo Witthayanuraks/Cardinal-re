@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../static/styles.css">
+  <script>
+    // Simulasi otentikasi admin (Nanti bisa diganti dengan sistem backend)
+    function checkAdmin() {
+      const isAdmin = localStorage.getItem("admin") === "true";
+      if (!isAdmin) {
+        alert("Anda tidak memiliki akses sebagai admin!");
+        window.location.href = "/login"; // Redirect ke halaman login
+      }
+    }
+  </script>
+</head>
+<body onload="checkAdmin()">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark bg-dark p-3">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">Admin Dashboard</span>
+      <button class="btn btn-danger" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h1 class="text-center">Dashboard Admin</h1>
+
+    <div class="card mt-4">
+      <div class="card-header bg-primary text-white">Tambah Tim</div>
+      <div class="card-body">
+        <form action="/api/add-team" method="post">
+          <div class="mb-3">
+            <input type="text" class="form-control" name="name" placeholder="Nama Tim" required>
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" name="token" placeholder="Token Tim" required>
+          </div>
+          <button type="submit" class="btn btn-success">Tambah</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Tambah Soal -->
+    <div class="card mt-4">
+      <div class="card-header bg-primary text-white">Tambah Soal</div>
+      <div class="card-body">
+        <form action="/api/add-challenge" method="post">
+          <div class="mb-3">
+            <input type="text" class="form-control" name="title" placeholder="Judul Soal" required>
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" name="flag" placeholder="Flag" required>
+          </div>
+          <div class="mb-3">
+            <input type="number" class="form-control" name="points" placeholder="Poin" required>
+          </div>
+          <button type="submit" class="btn btn-success">Tambah</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="card mt-4">
+      <div class="card-header bg-info text-white">Leaderboard</div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Nama Tim</th>
+              <th>Skor</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ range .Leaderboard }}
+            <tr>
+              <td>{{ .Rank }}</td>
+              <td>{{ .TeamName }}</td>
+              <td>{{ .Score }}</td>
+            </tr>
+            {{ end }}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Daftar Tim -->
+    <div class="card mt-4">
+      <div class="card-header bg-secondary text-white">Daftar Tim</div>
+      <div class="card-body">
+        <ul class="list-group">
+          {{ range .Teams }}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ .Name }}
+            <span class="badge bg-primary rounded-pill">Skor: {{ .Score }}</span>
+          </li>
+          {{ end }}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Daftar Soal -->
+    <div class="card mt-4">
+      <div class="card-header bg-warning text-white">Daftar Soal</div>
+      <div class="card-body">
+        <ul class="list-group">
+          {{ range .Challenges }}
+          <li class="list-group-item">
+            <strong>{{ .Title }}</strong> - {{ .Points }} Poin
+          </li>
+          {{ end }}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    function logout() {
+      localStorage.removeItem("admin");
+      window.location.href = "/login";
+    }
+  </script>
+
+</body>
+</html>
