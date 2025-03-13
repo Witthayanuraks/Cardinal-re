@@ -2,7 +2,7 @@
 # KEEP IT THIS IF WANT CONTRIBUTION 
 
 ```
-git clone [text](https://github.com/Witthayanuraks/Monitoring-AttackDefend)
+git clone [text](https://github.com/Witthayanuraks/Cardinal-re)
 ```
 
 Backend ini adalah sistem untuk **Capture The Flag (CTF)** berbasis **Golang (Gin Framework)** dan **PostgreSQL**.  
